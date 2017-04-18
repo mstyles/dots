@@ -260,6 +260,7 @@ command! -nargs=* Diff !git diff <f-args>
 command! Staged Git! diff --staged
 
 command! Workers !~/restartworkers.sh
+command! InstallPlugins call dein#install()
 
 " run scripts
 command! Run !file=$(basename %);ext="${file\#\#*.}";filename="${file\%.*}"; clear;
