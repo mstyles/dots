@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dots=$(pwd)/dots
+dots=$(dirname "$0")/dots
 
 #=== FUNCTION =================================================================
 #        NAME: backup
@@ -56,7 +56,7 @@ do
             ;;
 
         vim)
-            git submodule update --init
+            cd "$dots" && git submodule update --init && cd -
             link ~/.vimrc "$dots/vimrc"
             link ~/.vim "$dots/vim"
             vim +InstallPlugins +qall
@@ -69,7 +69,7 @@ do
             link ~/.ctags "$dots/ctags"
             link ~/.gitconfig "$dots/gitconfig"
             link ~/.gitignore "$dots/gitignore"
-            git submodule update --init
+            cd "$dots" && git submodule update --init && cd -
             link ~/.vimrc "$dots/vimrc"
             link ~/.vim "$dots/vim"
             ;;
