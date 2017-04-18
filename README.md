@@ -1,27 +1,14 @@
-# vim
-## Setup
-1. clone repo into '.vim'
-    ```
-    git clone https://github.com/mstyles/vim.git ~/.vim
-    ```
-1. simlink .vimrc to .vim/vimrc
-    ```
-    ln -s ~/.vim/vimrc ~/.vimrc
-    ```
-1. Enter vim directory
-    ```
-    cd ~/.vim
-    ```
-1. Install submodule
-    ```
-    git submodule update --init
-    ```
-1. Open vim
-    ```
-    vim
-    ```
-1. Install packages using dein
-    ```
-    :call dein#install()
-    ```
-1. rejoice
+#### dots
+
+these are configuration files to most of the tools I use day to day. feel free
+to take anything you'd like.
+
+what I typically do is clone this repo in my home directory by running
+`cd; git clone http://github.com/mstyles/dots .dots` and make links between
+files stored in here (this repo) and files stored through out my system (mostly
+my home directory).
+
+the `configure` script in the repo can be used to create those links. You can
+run it without arguments to get a list of what it can link for you. Once you're
+ready to use a configuration, just run the script with the item name(s), like
+so: `./configure vim tmux`

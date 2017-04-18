@@ -1,0 +1,187 @@
+###############################################################################
+# DEFINITIONS......................................helper function definitions
+# PROMPT........................................................prompt settings
+# ENV_SETTINGS........................................settings for the bash env
+# TOOL_SETTINGS...............................................settings for tools
+# SETTINGS...................................settings for commands/applications
+# ALIASES..........................................anything but aliases go here
+# PATHS........................................................path var setters
+# EXTRA SOURCES....................................load additional source files
+###############################################################################
+
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
+###############################################################################
+# $DEFINITIONS
+###############################################################################
+
+#=== FUNCTION =================================================================
+#        NAME: source?
+# DESCRIPTION: loads a file if it exists
+# PARAMETER 1: file
+#==============================================================================
+function source? {
+    [ -f $1 ] && source $1
+}
+
+#=== FUNCTION =================================================================
+#        NAME: path!
+# DESCRIPTION: adds a path to the $PATH variable
+# PARAMETER 1: dir
+#==============================================================================
+function path! {
+    [ -d $1 ] && export PATH="$PATH:$1"
+}
+
+###############################################################################
+# $PROMPT
+###############################################################################
+
+# Gets the number of jobs
+ps1_jobscount() {
+    local stopped=$(jobs -sp | wc -l | sed 's/ //g')
+    local running=$(jobs -rp | wc -l | sed 's/ //g')
+    ((running+stopped)) && echo -n "(${running}r/${stopped}s) "
+}
+
+# Gets the exit code of the last command
+ps1_exit_code() {
+    local last_exit="$?"
+
+    # 0   ok
+    # 130 manually cancelled (ctrl-c)
+    # 146 sent process to background
+    # 146 (git?) less exit
+    if [ "$last_exit" -eq 0 ] || [ "$last_exit" -eq 146 ] || [ "$last_exit" -eq 141 ] || [ "$last_exit" -eq 130 ]; then
+        # echo "👾 "
+        return
+    else
+        echo "😡  "
+    fi
+}
+
+# Gets the current checked-out git branch
+ps1_git_branch() {
+     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+
+# --purple--
+# PS1="\[\033[38;5;129m\]\u@\h:\[\033[32m\]\w\[\033[33m\]\$(ps1_git_branch)\[\033[00m\]$ "
+# --cyan--
+PS1="\[\e[36m\]\u@\h:\[\e[m\]\w\[\033[33m\]\$(ps1_git_branch)\[\033[00m\]$ "
+
+###############################################################################
+# $ENV_SETTINGS
+###############################################################################
+
+EDITOR=vim
+
+# don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
+HISTCONTROL=ignoreboth
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+# colored output on mac
+export CLICOLOR=1
+# http://geoff.greer.fm/lscolors/
+# export LSCOLORS='exfxcxdxbxegedabagacad'
+# export LS_COLORS='di=34;40:ln=35;40:so=32;40:pi=33;40:ex=31;40:bd=34;46:cd=34;43:su=0;41:sg=0;46:tw=0;42:ow=0;43:'
+export LSCOLORS=axBxhxDxfxhxhxhxhxcxcx
+export LS_COLORS='di=1:fi=0:ln=31:pi=5:so=5:bd=5:cd=5:or=31:mi=0:ex=93:*.rpm=90'
+
+###############################################################################
+# $TOOL_SETTINGS
+###############################################################################
+
+# export GOPATH=$HOME/go
+# export GOROOT=/usr/local/opt/go/libexec
+
+export VAGRANT_DEFAULT_PROVIDER=virtualbox
+
+###############################################################################
+# $SETTINGS
+###############################################################################
+
+# vi mode
+set -o vi
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
+
+    alias grep='grep -I --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+###############################################################################
+# $ALIASES
+###############################################################################
+
+# some more ls aliases
+alias ll='ls -alF --group-directories-first --color=auto'
+alias la='ls -hA  --group-directories-first --color=auto'
+
+alias ..='cd ..'
+alias cd..='cd ..'
+
+# git aliases
+# alias checkout='TODO git_fancy_fuzzy_checkout'
+
+# work specific
+alias sta='cd /var/www/sta'
+alias comms='cd /var/www/sta/ext/is/communications-domain'
+alias commsi='cd /var/www/sta/ext/is/communications'
+alias iswsi='cd /var/www/ISWebServiceIntegration'
+alias mac='cd /var/www/MAC'
+alias work='cd /var/www/CommsWorkers'
+
+alias commsinstall='COMPOSER_ROOT_VERSION=$(git describe --abbrev=0 --tags) composer install'
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i \
+    "$([ $? = 0 ] && echo terminal || echo error)" \
+    "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+###############################################################################
+# $PATHS
+###############################################################################
+
+path! $HOME/.composer/vendor/bin
+path! $HOME/bin/
+path! $HOME/.dots/bin
+# path! $GOPATH/bin/
+
+###############################################################################
+# $EXTRA SOURCES
+###############################################################################
+
+source? $HOME/.bashrc_local
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi

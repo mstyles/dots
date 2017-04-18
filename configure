@@ -1,0 +1,79 @@
+#!/bin/bash
+
+dots=$(pwd)/dots
+
+#=== FUNCTION =================================================================
+#        NAME: backup
+# DESCRIPTION: backup a file ($1 => $1.bak) if it exists
+# PARAMETER 1: the file you want to backup
+#==============================================================================
+backup() {
+    local fname=$1
+    [ -e "$fname" ] && mv "$fname" "$fname.bak"
+}
+
+#=== FUNCTION =================================================================
+#        NAME: link
+# DESCRIPTION: create a symbolic link
+# PARAMETER 1: the file you want to end up pointing to
+# PARAMETER 2: the configuration file from this repo
+#==============================================================================
+link() {
+    local dest=$1
+    local src=$2
+
+    backup "$dest"
+    [ -h "$dest" ] && rm "$dest"
+
+    echo "linking $src with $dest"
+    ln -s "$src" "$dest"
+}
+
+
+for arg in "$@"
+do
+    case $arg in
+
+        ack)
+            link ~/.ackrc "$dots/ackrc"
+            ;;
+
+        bash)
+            link ~/.bashrc "$dots/bashrc"
+            ;;
+
+        composer)
+            link ~/.composer/composer.json "$dots/composer.json"
+            link ~/.composer/composer.lock "$dots/composer.lock"
+            link ~/.composer/config.json "$dots/composer-config.json"
+            ;;
+
+        ctags)
+            link ~/.ctags "$dots/ctags"
+            ;;
+
+        git)
+            link ~/.gitconfig "$dots/gitconfig"
+            link ~/.gitignore "$dots/gitignore"
+            ;;
+
+        vim)
+            git submodule update --init
+            link ~/.vimrc "$dots/vimrc"
+            link ~/.vim "$dots/vim"
+            ;;
+
+        *)
+            echo "invalid argument $arg"
+            ;;
+    esac
+done
+
+if [ -z "$1" ]; then
+    echo "options:"
+
+    for option in git vim composer ctags ack bash
+    do
+        echo " - $option"
+    done
+fi
