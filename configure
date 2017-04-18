@@ -44,8 +44,6 @@ do
 
         composer)
             link ~/.composer/composer.json "$dots/composer.json"
-            link ~/.composer/composer.lock "$dots/composer.lock"
-            link ~/.composer/config.json "$dots/composer-config.json"
             ;;
 
         ctags)
@@ -63,6 +61,18 @@ do
             link ~/.vim "$dots/vim"
             ;;
 
+        all)
+            link ~/.ackrc "$dots/ackrc"
+            link ~/.bashrc "$dots/bashrc"
+            link ~/.composer/composer.json "$dots/composer.json"
+            link ~/.ctags "$dots/ctags"
+            link ~/.gitconfig "$dots/gitconfig"
+            link ~/.gitignore "$dots/gitignore"
+            git submodule update --init
+            link ~/.vimrc "$dots/vimrc"
+            link ~/.vim "$dots/vim"
+            ;;
+
         *)
             echo "invalid argument $arg"
             ;;
@@ -72,7 +82,7 @@ done
 if [ -z "$1" ]; then
     echo "options:"
 
-    for option in git vim composer ctags ack bash
+    for option in git vim composer ctags ack bash all
     do
         echo " - $option"
     done

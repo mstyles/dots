@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Increments the minor tag version on the current branch
+
+current_tag=$(git describe --abbrev=0 --tags)
+versions=(${current_tag//./ })
+next_tag="${versions[0]}.${versions[1]}.$((++versions[2]))"
+
+git tag "${next_tag}"
+
+echo "Tagged: ${next_tag}"
+echo "Review tag and then push using 'git push --tags'"
