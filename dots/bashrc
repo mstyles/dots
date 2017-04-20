@@ -66,10 +66,12 @@ ps1_git_branch() {
      git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
 
-# --purple--
-# PS1="\[\033[38;5;129m\]\u@\h:\[\033[32m\]\w\[\033[33m\]\$(ps1_git_branch)\[\033[00m\]$ "
-# --cyan--
-PS1="\[\e[36m\]\u@\h:\[\e[m\]\w\[\033[33m\]\$(ps1_git_branch)\[\033[00m\]$ "
+distro=$(sed -n "/^ID=/s/ID=//p" /etc/os-release)
+if [ "$distro" = "ubuntu" ]; then
+    PS1="\[\033[38;5;129m\]\u@\h:\[\033[32m\]\w\[\033[33m\]\$(ps1_git_branch)\[\033[00m\]$ "
+else
+    PS1="\[\e[36m\]\u@\h:\[\e[m\]\w\[\033[33m\]\$(ps1_git_branch)\[\033[00m\]$ "
+fi
 
 ###############################################################################
 # $ENV_SETTINGS

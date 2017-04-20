@@ -12,3 +12,5 @@
 	branch = true
 [core]
 	excludesfile = ~/.gitignore
+[merge]
+	tool = vimdiff
