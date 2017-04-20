@@ -2,7 +2,7 @@
 
 # Increments the minor tag version on the current branch
 
-current_tag=$(git describe --abbrev=0 --tags)
+current_tag=$(git describe --abbrev=0 --tags --first-parent)
 versions=(${current_tag//./ })
 next_tag="${versions[0]}.${versions[1]}.$((++versions[2]))"
 

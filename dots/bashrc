@@ -148,10 +148,12 @@ alias sta='cd /var/www/sta'
 alias comms='cd /var/www/sta/ext/is/communications-domain'
 alias commsi='cd /var/www/sta/ext/is/communications'
 alias iswsi='cd /var/www/ISWebServiceIntegration'
+alias lmp='cd /var/www/sta/ext/is/lmp-domain' 
 alias mac='cd /var/www/MAC'
+alias nex='cd /var/www/sta/ext/is/nexusdomain'
 alias work='cd /var/www/CommsWorkers'
 
-alias commsinstall='COMPOSER_ROOT_VERSION=$(git describe --abbrev=0 --tags) composer install'
+alias commsinstall='COMPOSER_ROOT_VERSION=$(git describe --abbrev=0 --tags --first-parent) composer install'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
