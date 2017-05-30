@@ -170,6 +170,8 @@ alias alert='notify-send --urgency=low -i \
 path! $HOME/.composer/vendor/bin
 path! $HOME/bin/
 path! $HOME/.dots/bin
+path! $HOME/.local/bin
+path! /var/lib/bento4/bin
 # path! $GOPATH/bin/
 
 ###############################################################################

@@ -248,6 +248,8 @@ command! Cautoload !composer dumpautoload
 command! -nargs=1 Unittest !phpunit --debug --filter=<f-args> %
 command! ViewTests !gnome-open ./bin/report/index.html
 
+command! Curl !curl --data '{"file": "media.gsm"}' localhost:3000/media --header "Content-Type:application/json"
+
 "asterisk
 command! Hangup !asterisk -x 'channel request hangup all'
 command! Chanstat !asterisk -x 'core show channels concise'
