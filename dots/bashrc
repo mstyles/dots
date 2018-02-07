@@ -156,6 +156,7 @@ alias work='cd /var/www/CommsWorkers'
 alias commsinstall='COMPOSER_ROOT_VERSION=$(git describe --abbrev=0 --tags --first-parent) composer install'
 
 alias startvm='VBoxManage startvm "stavagrant_default_1492449087226_1882" --type headless'
+alias startvm2='VBoxManage startvm "stavagrant2_default_1496178370724_25566" --type headless'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert

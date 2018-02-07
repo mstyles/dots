@@ -55,6 +55,10 @@ do
             link ~/.gitignore "$dots/gitignore"
             ;;
 
+        mysql)
+            link ~/.my.cnf "$dots/my.cnf"
+            ;;
+
         vim)
             cd "$dots" && git submodule update --init && cd -
             link ~/.vimrc "$dots/vimrc"
@@ -69,6 +73,7 @@ do
             link ~/.ctags "$dots/ctags"
             link ~/.gitconfig "$dots/gitconfig"
             link ~/.gitignore "$dots/gitignore"
+            link ~/.my.cnf "$dots/my.cnf"
             cd "$dots" && git submodule update --init && cd -
             link ~/.vimrc "$dots/vimrc"
             link ~/.vim "$dots/vim"
