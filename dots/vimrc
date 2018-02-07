@@ -317,7 +317,6 @@ catch /^Vim\%((\a\+)\)\=:E185/
 endtry
 
 hi Constant                    ctermfg=229
-"hi String                      ctermfg=229
 hi Statement                   ctermfg=117
 hi Structure                   ctermfg=111
 
