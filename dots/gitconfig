@@ -1,17 +1,20 @@
 [user]
-	name = Matt Styles
-	email = mstyles@insidesales.com
+    name = Matt Styles
+    email = mstyles@insidesales.com
 [push]
-	default = upstream
+    default = upstream
 [log]
-	decorate = auto
+    decorate = auto
 [color]
-	ui = auto
+    ui = auto
 [status]
-	short = true
-	branch = true
+    short = true
+    branch = true
 [core]
-	excludesfile = ~/.gitignore
-	editor = vim
+    excludesfile = ~/.gitignore
+    editor = vim
 [merge]
-	tool = vimdiff
+    tool = vimdiff
+[alias]
+    lint = !git diff --cached --name-only --diff-filter=AM | grep 'php' | xargs -P 10 -n1 php -l
+    recent = "!git reflog | egrep -io \"moving from ([^[:space:]]+)\" | awk '{ print $3 }' | awk ' !x[$0]++' | head"

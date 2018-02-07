@@ -153,6 +153,8 @@ alias mac='cd /var/www/MAC'
 alias nex='cd /var/www/sta/ext/is/nexusdomain'
 alias work='cd /var/www/CommsWorkers'
 
+alias clearlogs='echo '' | tee /var/log/apache2/nexus.log /var/log/cli_php_errors.log /var/log/apache2/php_errors.log'
+
 alias commsinstall='COMPOSER_ROOT_VERSION=$(git describe --abbrev=0 --tags --first-parent) composer install'
 
 alias startvm='VBoxManage startvm "stavagrant_default_1492449087226_1882" --type headless'
@@ -191,3 +193,6 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
