@@ -140,6 +140,9 @@ alias la='ls -hA  --group-directories-first --color=auto'
 alias ..='cd ..'
 alias cd..='cd ..'
 
+# sort in ASCII order (upper-case before lower-case)
+alias asciisort='LC_COLLATE=C sort'
+
 # git aliases
 # alias checkout='TODO git_fancy_fuzzy_checkout'
 
