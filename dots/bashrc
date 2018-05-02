@@ -143,6 +143,11 @@ alias cd..='cd ..'
 # sort in ASCII order (upper-case before lower-case)
 alias asciisort='LC_COLLATE=C sort'
 
+# Check disk usage
+alias disk_search='du -hsx * | sort -rh | head -10'
+
+alias fagent='eval $(ssh-agent -s) && ssh-add ~/.ssh/id_rsa'
+
 # git aliases
 # alias checkout='TODO git_fancy_fuzzy_checkout'
 
