@@ -79,6 +79,9 @@ fi
 
 EDITOR=vim
 
+WORKSPACE="~/projects"
+#WORKSPACE="/var/www"
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -152,14 +155,14 @@ alias fagent='eval $(ssh-agent -s) && ssh-add ~/.ssh/id_rsa'
 # alias checkout='TODO git_fancy_fuzzy_checkout'
 
 # work specific
-alias sta='cd /var/www/sta'
-alias comms='cd /var/www/sta/ext/is/communications-domain'
-alias commsi='cd /var/www/sta/ext/is/communications'
-alias iswsi='cd /var/www/ISWebServiceIntegration'
-alias lmp='cd /var/www/sta/ext/is/lmp-domain' 
-alias mac='cd /var/www/MAC'
-alias nex='cd /var/www/sta/ext/is/nexusdomain'
-alias work='cd /var/www/CommsWorkers'
+alias sta="cd $WORKSPACE/SalesTeamAutomation"
+alias comms="cd $WORKSPACE/ISWebServiceIntegration/ext/is/communications-domain"
+alias commsi="cd $WORKSPACE/ISWebServiceIntegration/ext/is/communications"
+alias iswsi="cd $WORKSPACE/ISWebServiceIntegration"
+alias lmp="cd $WORKSPACE/ISWebServiceIntegration/ext/is/lmp-domain"
+alias mac="cd $WORKSPACE/MAC"
+alias nex="cd $WORKSPACE/ISWebServiceIntegration/ext/is/nexusdomain"
+alias work="cd $WORKSPACE/CommsWorkers"
 
 alias clearlogs='echo '' | tee /var/log/apache2/nexus.log /var/log/cli_php_errors.log /var/log/apache2/php_errors.log'
 
