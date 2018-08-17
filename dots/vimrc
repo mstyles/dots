@@ -255,7 +255,7 @@ command! -nargs=* GccCat !gcc % -o prog.out && chmod +x prog.out && cat <f-args>
 command! Cupdate !composer update
 command! Cautoload !composer dumpautoload
 "command! -nargs=* Test !phpunit <f-args>
-command! -nargs=1 Unittest !phpunit --debug --filter=<f-args> %
+command! -nargs=1 Unittest !bin/phpunit --debug --filter=<f-args> %
 command! ViewTests !gnome-open ./bin/report/index.html
 
 command! Curl !curl --data '{"file": "media.gsm"}' localhost:3000/media --header "Content-Type:application/json"
