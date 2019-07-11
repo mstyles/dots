@@ -34,6 +34,15 @@ function path! {
     [ -d $1 ] && export PATH="$PATH:$1"
 }
 
+#=== FUNCTION =================================================================
+#        NAME: dbash
+# DESCRIPTION: starts a bash terminal in the given docker container
+# PARAMETER 1: container name
+#==============================================================================
+function dbash {
+    docker exec -it $1 /bin/bash
+}
+
 ###############################################################################
 # $PROMPT
 ###############################################################################
@@ -80,15 +89,15 @@ fi
 
 EDITOR=vim
 
-WORKSPACE="~/projects"
+WORKSPACE="$HOME/projects"
 #WORKSPACE="/var/www"
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+HISTSIZE=-1
+HISTFILESIZE=-1
 
 # colored output on mac
 export CLICOLOR=1
@@ -102,7 +111,7 @@ export LS_COLORS='di=1:fi=0:ln=31:pi=5:so=5:bd=5:cd=5:or=31:mi=0:ex=93:*.rpm=90'
 # $TOOL_SETTINGS
 ###############################################################################
 
-# export GOPATH=$HOME/go
+export GOPATH=$HOME/go
 # export GOROOT=/usr/local/opt/go/libexec
 
 export VAGRANT_DEFAULT_PROVIDER=virtualbox
@@ -155,32 +164,51 @@ alias fagent='eval $(ssh-agent -s) && ssh-add ~/.ssh/id_rsa'
 # git aliases
 # alias checkout='TODO git_fancy_fuzzy_checkout'
 
-# work specific
+alias proj="cd $WORKSPACE"
 alias sta="cd $WORKSPACE/sales-team-automation"
 alias comms="cd $WORKSPACE/iswebserviceintegration/ext/is/communications-domain"
 alias commsi="cd $WORKSPACE/iswebserviceintegration/ext/is/communications"
 alias iswsi="cd $WORKSPACE/iswebserviceintegration"
+alias cas="cd $WORKSPACE/central-admin-service"
 alias lmp="cd $WORKSPACE/iswebserviceintegration/ext/is/lmp-domain"
-alias mac="cd $WORKSPACE/mac"
 alias nex="cd $WORKSPACE/iswebserviceintegration/ext/is/nexusdomain"
 alias work="cd $WORKSPACE/commsworkers"
 
 alias clearlogs='echo '' | tee /var/log/apache2/nexus.log /var/log/cli_php_errors.log /var/log/apache2/php_errors.log'
 
-alias commsinstall='COMPOSER_ROOT_VERSION=$(git describe --abbrev=0 --tags --first-parent) composer install'
-
 alias startvm='VBoxManage startvm "stavagrant_default_1531775685055_97439" --type headless'
 alias startvm2='VBoxManage startvm "stavagrant2_default_1533596444526_15497" --type headless'
-#docker_iswsi='docker run -p 4000:80 -it -d --mount type=bind,source=/home/mstyles/projects/iswebserviceintegration,target=/var/www/html --name iswsi iswsi'
-#docker_commsadmin='docker run -p 4001:80 -it -d --mount type=bind,source=/home/mstyles/projects/commsadmin,target=/var/www/html --name commsadmin commsadmin'
+alias startcomms='docker start asterisk db memcache mq commsadmin iswsi commsworkers'
+#docker run -p 4000:80 -it -v /home/mstyles/data/recordings:/home/comms_recordings -d --mount type=bind,source=/home/mstyles/projects/iswebserviceintegration,target=/var/www/html --name iswsi iswsi
+#docker run -p 4003:80 -it -d --mount type=bind,source=/home/mstyles/projects/iswebserviceintegration,target=/var/www/html --name test-iswsi test-iswsi
+#docker run -p 4001:80 -it -d --mount type=bind,source=/home/mstyles/projects/commsadmin,target=/var/www/html --name commsadmin commsadmin
+#docker run -p 4004:80 -e PHPRC="/usr/local/etc/php/php.development.ini" -it -d --mount type=bind,source=/home/mstyles/projects/central-admin-service,target=/var/www/html --name cas cas
+#docker run --name db -p 3306:3306 -e MYSQL_ROOT_PASSWORD=d3v3nv -d mysql:5.6
+#docker run -d --hostname my-rabbit --name mq -p 5672:5672 -p 15672:15672 rabbitmq:3.6.5-management
+#docker run --name memcache -p 11211:11211 -d memcached:latest
 #docker exec -it commsworkers /bin/bash restartworkers.sh
-#alias dockerbash='docker exec -it commsworkers /bin/bash'
+#docker cp ext/is/communications/src/telephony/platforms/asterisk/dialplans/dialer_core.conf asterisk:/etc/asterisk/dialer_core.conf
+#docker cp ext/is/communications/src/telephony/platforms/asterisk/dialplans/route_inbound.conf asterisk:/etc/asterisk/route_inbound.conf
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i \
     "$([ $? = 0 ] && echo terminal || echo error)" \
     "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+alias nrpe_check="sudo grep '^command\[' /etc/nagios/nrpe_local*.cfg | cut -d'=' -f2- | xargs -L1 -d '\n' sudo su root -c"
+
+#azure stuff
+# az login
+# az account list
+# az account set --subscription eus-s01
+# az account show
+# az keyvault secret -h
+# az aks get-credentials --resource-group eus-s01-all-aks --name eus-s01-all-aks
+# kubectl cluster-info
+# kubectl -n cp get pods
+# kubectl -n cp exec commsadmin-7777db579d-bnblh -i -t bash
+# kubectl get secrets -n cp
 
 ###############################################################################
 # $PATHS
@@ -191,7 +219,7 @@ path! $HOME/bin/
 path! $HOME/.dots/bin
 path! $HOME/.local/bin
 path! /var/lib/bento4/bin
-# path! $GOPATH/bin/
+path! $GOPATH/bin/
 
 ###############################################################################
 # $EXTRA SOURCES
