@@ -179,10 +179,12 @@ alias clearlogs='echo '' | tee /var/log/apache2/nexus.log /var/log/cli_php_error
 alias startvm='VBoxManage startvm "stavagrant_default_1531775685055_97439" --type headless'
 alias startvm2='VBoxManage startvm "stavagrant2_default_1533596444526_15497" --type headless'
 alias startcomms='docker start asterisk db memcache mq commsadmin iswsi commsworkers'
-#docker run -p 4000:80 -it -v /home/mstyles/data/recordings:/home/comms_recordings -d --mount type=bind,source=/home/mstyles/projects/iswebserviceintegration,target=/var/www/html --name iswsi iswsi
+#docker run -p 4000:80 -e PHPRC="/usr/local/etc/php/php.development.ini" -it -v /home/mstyles/data/recordings:/home/comms_recordings -d --mount type=bind,source=/home/mstyles/projects/iswebserviceintegration,target=/var/www/html --name iswsi iswsi
 #docker run -p 4003:80 -it -d --mount type=bind,source=/home/mstyles/projects/iswebserviceintegration,target=/var/www/html --name test-iswsi test-iswsi
 #docker run -p 4001:80 -it -d --mount type=bind,source=/home/mstyles/projects/commsadmin,target=/var/www/html --name commsadmin commsadmin
+#docker run -p 4002:80 -it -d --mount type=bind,source=/home/mstyles/projects/audio-converter,target=/var/www/audio-converter --name audio-converter audio-converter
 #docker run -p 4004:80 -e PHPRC="/usr/local/etc/php/php.development.ini" -it -d --mount type=bind,source=/home/mstyles/projects/central-admin-service,target=/var/www/html --name cas cas
+#docker run -p 4005:80 -it -d --mount type=bind,source=/home/mstyles/projects/time-zone-phone-numbers,target=/src --name tzpn tzpn
 #docker run --name db -p 3306:3306 -e MYSQL_ROOT_PASSWORD=d3v3nv -d mysql:5.6
 #docker run -d --hostname my-rabbit --name mq -p 5672:5672 -p 15672:15672 rabbitmq:3.6.5-management
 #docker run --name memcache -p 11211:11211 -d memcached:latest
