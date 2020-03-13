@@ -40,7 +40,14 @@ function path! {
 # PARAMETER 1: container name
 #==============================================================================
 function dbash {
-    docker exec -it $1 /bin/bash
+    if [ "$1" = "iswsi" ]; then
+        project="docker-environment_iswebserviceintegration_1"
+    elif [ "$1" = "commsworkers" ]; then
+        project="docker-environment_commsworkers_1"
+    else
+        project="$1"
+    fi
+    docker exec -it $project /bin/bash
 }
 
 ###############################################################################
@@ -178,7 +185,7 @@ alias clearlogs='echo '' | tee /var/log/apache2/nexus.log /var/log/cli_php_error
 
 alias startvm='VBoxManage startvm "stavagrant_default_1531775685055_97439" --type headless'
 alias startvm2='VBoxManage startvm "stavagrant2_default_1533596444526_15497" --type headless'
-alias startcomms='docker start asterisk db memcache mq commsadmin iswsi commsworkers'
+alias startcomms="cd $WORKSPACE/docker-environment && docker-compose up --detach"
 #docker run -p 4000:80 -e PHPRC="/usr/local/etc/php/php.development.ini" -it -v /home/mstyles/data/recordings:/home/comms_recordings -d --mount type=bind,source=/home/mstyles/projects/iswebserviceintegration,target=/var/www/html --name iswsi iswsi
 #docker run -p 4003:80 -it -d --mount type=bind,source=/home/mstyles/projects/iswebserviceintegration,target=/var/www/html --name test-iswsi test-iswsi
 #docker run -p 4001:80 -it -d --mount type=bind,source=/home/mstyles/projects/commsadmin,target=/var/www/html --name commsadmin commsadmin

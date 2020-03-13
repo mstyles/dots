@@ -14,14 +14,12 @@ call dein#begin('$HOME/.vim/dein')
 call dein#add('Shougo/dein.vim')
 
 " Add or remove your plugins here:
-" call dein#add('Shougo/neosnippet.vim')
-" call dein#add('Shougo/neosnippet-snippets')
 call dein#add('airblade/vim-gitgutter')
 call dein#add('bling/vim-airline')
 call dein#add('fatih/vim-go')
 call dein#add('hashivim/vim-terraform')
-call dein#add('joonty/vdebug')
-call dein#add('kien/ctrlp.vim')
+" call dein#disable('joonty/vdebug')
+call dein#add('ctrlpvim/ctrlp.vim')
 call dein#add('majutsushi/tagbar')
 call dein#add('mileszs/ack.vim')
 call dein#add('nanotech/jellybeans.vim')
@@ -48,9 +46,9 @@ filetype plugin indent on
 syntax enable
 
 " If you want to install not installed plugins on startup.
-"if dein#check_install()
-"  call dein#install()
-"endif
+if dein#check_install()
+ call dein#install()
+endif
 
 "End dein Scripts-------------------------
 
@@ -92,6 +90,9 @@ set scrolloff=3                          " buffer for screen when scrolling
 set ttyfast                              " makes things... smoother?
 
 set sessionoptions-=options              " don't override .vimrc with session
+
+" More frequent updates for, e.g. signs.
+set updatetime=750
 
 syntax on
 
@@ -339,6 +340,10 @@ hi NonText                     ctermfg=235  ctermbg=None
 hi SpecialKey                  ctermfg=235  ctermbg=None
 
 hi javaScriptReserved          ctermfg=None
+
+hi GitGutterDelete ctermfg=Red
+hi GitGutterAdd ctermfg=Green
+hi GitGutterChange ctermfg=Yellow
 
 hi link phpFunctions phpRegion
 hi link phpMethods phpRegion
