@@ -96,7 +96,7 @@ fi
 
 EDITOR=vim
 
-WORKSPACE="$HOME/projects"
+WORKSPACE="$HOME/dev"
 #WORKSPACE="/var/www"
 
 # don't put duplicate lines or lines starting with space in the history.
@@ -186,6 +186,7 @@ alias clearlogs='echo '' | tee /var/log/apache2/nexus.log /var/log/cli_php_error
 alias startvm='VBoxManage startvm "stavagrant_default_1531775685055_97439" --type headless'
 alias startvm2='VBoxManage startvm "stavagrant2_default_1533596444526_15497" --type headless'
 alias startcomms="cd $WORKSPACE/docker-environment && docker-compose up --detach"
+alias systemup="cd $WORKSPACE && vagrant up && pm2 start gatling.json"
 #docker run -p 4000:80 -e PHPRC="/usr/local/etc/php/php.development.ini" -it -v /home/mstyles/data/recordings:/home/comms_recordings -d --mount type=bind,source=/home/mstyles/projects/iswebserviceintegration,target=/var/www/html --name iswsi iswsi
 #docker run -p 4003:80 -it -d --mount type=bind,source=/home/mstyles/projects/iswebserviceintegration,target=/var/www/html --name test-iswsi test-iswsi
 #docker run -p 4001:80 -it -d --mount type=bind,source=/home/mstyles/projects/commsadmin,target=/var/www/html --name commsadmin commsadmin
@@ -249,3 +250,4 @@ fi
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

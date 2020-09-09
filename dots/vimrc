@@ -16,24 +16,28 @@ call dein#add('Shougo/dein.vim')
 " Add or remove your plugins here:
 call dein#add('airblade/vim-gitgutter')
 call dein#add('bling/vim-airline')
-call dein#add('fatih/vim-go')
-call dein#add('hashivim/vim-terraform')
+" call dein#add('fatih/vim-go')
+" call dein#add('hashivim/vim-terraform')
 " call dein#disable('joonty/vdebug')
 call dein#add('ctrlpvim/ctrlp.vim')
 call dein#add('majutsushi/tagbar')
 call dein#add('mileszs/ack.vim')
 call dein#add('nanotech/jellybeans.vim')
-call dein#add('phleet/vim-arcanist')
+" call dein#add('phleet/vim-arcanist')
 call dein#add('scrooloose/nerdtree')
-call dein#add('scrooloose/syntastic')
-call dein#add('stephpy/vim-php-cs-fixer')
+" call dein#add('scrooloose/syntastic')
+" call dein#add('stephpy/vim-php-cs-fixer')
 call dein#add('tpope/vim-fugitive')
 call dein#add('tpope/vim-surround')
-call dein#add('vim-scripts/dbext.vim')
-call dein#add('vim-scripts/mru.vim')
+" call dein#add('vim-scripts/dbext.vim')
+" call dein#add('vim-scripts/mru.vim')
 call dein#add('vim-scripts/taglist.vim')
 call dein#add('vim-scripts/tComment')
-call dein#add('dantleech/vim-phpstan', { 'rev': 'vimscript' })
+" call dein#add('dantleech/vim-phpstan', { 'rev': 'vimscript' })
+call dein#add('neoclide/coc.nvim', {'merged':0, 'rev': 'release'})
+call dein#add('editorconfig/editorconfig-vim')
+
+" TODO install typescript syntax support (see https://github.com/leafgarland/typescript-vim)
 
 " You can specify revision/branch/tag.
 " call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
@@ -50,6 +54,8 @@ if dein#check_install()
  call dein#install()
 endif
 
+" call map(dein#check_clean(), "delete(v:val, 'rf')")
+
 "End dein Scripts-------------------------
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -58,7 +64,7 @@ endif
 scriptencoding utf-8
 set modeline                             " Enable vim modelines (for dbext.vim)
 set hidden                               " best. thing. ever. no buffer closed
-set antialias
+" set antialias
 set cursorline                           " highlight the line cursor is on
 set hlsearch                             " highlight all matches
 set ignorecase                           " case insensitive searches
@@ -143,6 +149,8 @@ let g:php_cs_fixer_verbose = 0
 let g:omni_sql_no_default_maps = 1
 
 let g:phpstan_analyse_level = 2
+
+let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " $FILE TYPE SETTINGS
@@ -259,7 +267,7 @@ command! -nargs=* GccCat !gcc % -o prog.out && chmod +x prog.out && cat <f-args>
 command! Cupdate !composer update
 command! Cautoload !composer dumpautoload
 "command! -nargs=* Test !phpunit <f-args>
-command! -nargs=1 Unittest !bin/phpunit --debug --filter=<f-args> %
+command! -nargs=1 Unittest !vendor/bin/phpunit --debug --filter=<f-args> %
 command! ViewTests !gnome-open ./bin/report/index.html
 
 command! Curl !curl --data '{"file": "media.gsm"}' localhost:3000/media --header "Content-Type:application/json"
