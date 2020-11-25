@@ -4,3 +4,4 @@
 --ignore-file=is:.tags
 --ignore-file=is:lendioWidgets.js
 --ignore-dir=dist
+--ignore-dir=logs
