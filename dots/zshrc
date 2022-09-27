@@ -78,7 +78,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
     # git
-    zsh-nvm
+    # zsh-nvm
     vi-mode
 )
 
@@ -86,12 +86,27 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export WORKSPACE="$HOME/dev"
+export WORKSPACE="$HOME/dev/lendio-infra/repositories"
 export EDITOR=vim
 export COMPOSER_MEMORY_LIMIT=5G
 export PATH="/usr/local/opt/mysql-client@5.7/bin:$PATH"
 
+export NOVA_USERNAME=developers@lendio.com
+export NOVA_PASSWORD=$(cat ~/dev/docker-secrets/nova-password)
+
 fpath=($HOME/.dots/dots/zsh $fpath)
+
+# Sunrise ECS-CLI config
+export PATH=$PATH:/usr/local/go/bin
+export GOPATH=$HOME/go # default directory
+export PATH=$GOPATH/bin:$PATH
+# deploy user
+export ECS_CLI_AWS_REGION="us-east-1"
+export ECS_CLI_AWS_SECRET=$(cat ~/dev/docker-secrets/ecs-cli-aws-secret)
+export ECS_CLI_AWS_KEY=$(cat ~/dev/docker-secrets/ecs-cli-aws-key)
+export CIRCLE_API_USER_TOKEN=$(cat ~/dev/docker-secrets/circle-api-user-token)
+
+# export MANPAGER='nvim +Man!'
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -118,16 +133,31 @@ fpath=($HOME/.dots/dots/zsh $fpath)
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias ll="ls -hal"
 alias fagent='eval $(ssh-agent -s) && ssh-add ~/.ssh/id_rsa'
-alias systemup="cd $WORKSPACE && vagrant up && pm2 start gatling.json"
 
 alias api="cd $WORKSPACE/api"
-alias lender="cd $WORKSPACE/lender-portal"
 alias pp="cd $WORKSPACE/partner-portal"
-alias pipe="cd $WORKSPACE/ng"
-alias bp="cd $WORKSPACE/scotty"
-alias infra="cd $WORKSPACE/lendio-infra"
+alias pipe="cd $WORKSPACE/pipeline"
+alias bp="cd $WORKSPACE/borrower-portal"
+alias bpapi="cd $WORKSPACE/bp-api"
+alias hp="cd $WORKSPACE/home-portal"
+alias fin="cd $WORKSPACE/financial-integration-service"
+alias biz="cd $WORKSPACE/business-service"
+alias infra="cd $HOME/dev/lendio-infra"
+alias binfra="cd $HOME/dev/billy-infra"
+alias bnksrv="cd $HOME/dev/billy-infra/repositories/bank-service"
+alias bapi="cd $HOME/dev/billy-infra/repositories/billy-api"
 
-alias shout="vim ~/Documents/shoutouts.txt"
+alias docker-api="docker exec -it lendio-infra-api-1 sh"
+alias docker-worker="docker exec -it lendio-infra-api-worker_1 /bin/bash"
+alias docker-pp="docker exec -it lendio-infra-partner-portal_1 /bin/bash"
+alias docker-pipe="docker exec -it lendio-infra-pipeline_1 /bin/bash"
+alias docker-bp="docker exec -it lendio-infra-borrower-portal_1 /bin/bash"
+alias docker-hp="docker exec -it lendio-infra-robot-unicorn_1 /bin/bash"
+alias docker-stop="docker stop \$(docker ps -aq)"
+alias docker-start="cd $WORKSPACE && docker compose up -d api && cd -"
+alias docker-start-full="cd $WORKSPACE && docker compose up -d && cd -"
+
+alias wrestart="docker exec lendio-infra-api-worker-1 pkill -9 -f artisan"
 
 # Bring all windows of the given proc to the front (e.g. "showall xterm")
 function showall {
@@ -136,7 +166,69 @@ function showall {
   do test "${pids/ $pid }" != "$pids" && wmctrl -i -a $id; done
 }
 
+# Decodes the given JWT
+function jwt-decode(){
+    jq -R 'split(".") | .[1] | @base64d | fromjson' <<< "$1"
+}
+
+##### Kubernetes stuffs ####
+# saml2aws login -a lendio_corp
+#
+# aws eks --region us-east-1 update-kubeconfig --name sandbox-corp --profile saml
+# kubectl exec -it deploy/api -- sh
+#
+# aws eks --region us-east-1 update-kubeconfig --name production-corp --profile saml
+# kubectl exec -it deploy/api -n lender-sandbox -- sh
+#
+# Tinker on Prod
+# kubectl exec -it deploy/api-rabbit-jobs -- php artisan tinker
+
+function sencrypt () {
+    echo "Let's encrypt..."
+    encrypted=$(ssh salt-master-1.$1.corp.lendio.net "echo -n \"$2\" > /tmp/sencrypt && sudo salt-call datakey.encrypt /tmp/sencrypt file=true" | tr -d '\n')
+    ssh salt-master-1.$1.corp.lendio.net "rm /tmp/sencrypt && sudo salt-call datakey.decrypt s=\"$encrypted\""
+    echo -n "$encrypted"
+    # echo -n "$encrypted" | pbcopy
+    # echo "Result copied to clipboard."
+}
+function sdecrypt () {
+    echo "Decrypting..."
+    if [[ -z "$1" || -z "$2" ]]
+    then
+        echo "Please provide the required arguments."
+        echo -e "\nUsage: $0 <environment> <valueToEncrypt> \n"
+        exit
+    fi
+    ssh salt-master-1.$1.corp.lendio.net "sudo salt-call datakey.decrypt s=\"$2\""
+}
+
+function start-wireguard {
+    for i in `ls /etc/wireguard | grep conf | sed 's/.conf//g'`; do
+      sudo wg-quick up $i;
+    done
+}
+function restart-wireguard {
+    for i in `ls /etc/wireguard | grep conf | sed 's/.conf//g'`; do
+      sudo wg-quick down $i;
+      sudo wg-quick up $i;
+    done
+}
+function stop-wireguard {
+    for i in `ls /etc/wireguard | grep conf | sed 's/.conf//g'`; do
+      sudo wg-quick down $i;
+    done
+}
+##### END Kubernetes stuffs ####
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-[[ -e ~/.phpbrew/bashrc ]] && source ~/.phpbrew/bashrc
+export GITHUB_TOKEN=$(cat ~/dev/docker-secrets/docker-git-token)
+
+export OAUTH_PRIVATE=$(cat ~/dev/docker-secrets/api-oauth-private.key)
+export OAUTH_PUBLIC=$(cat ~/dev/docker-secrets/api-oauth-public.key)
+
+export NPM_TOKEN="9dd1bb6c-e4b2-4987-82e6-a7a209a0f087"
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

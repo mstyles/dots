@@ -3,5 +3,8 @@
 --type-set=java:ext:cls
 --ignore-file=is:.tags
 --ignore-file=is:lendioWidgets.js
+--ignore-file=is:.php_cs.cache
 --ignore-dir=dist
 --ignore-dir=logs
+--ignore-dir=storage/clockwork
+--ignore-dir=vendor/composer
