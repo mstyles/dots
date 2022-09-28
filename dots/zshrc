@@ -228,7 +228,7 @@ export GITHUB_TOKEN=$(cat ~/dev/docker-secrets/docker-git-token)
 export OAUTH_PRIVATE=$(cat ~/dev/docker-secrets/api-oauth-private.key)
 export OAUTH_PUBLIC=$(cat ~/dev/docker-secrets/api-oauth-public.key)
 
-export NPM_TOKEN="9dd1bb6c-e4b2-4987-82e6-a7a209a0f087"
+export NPM_TOKEN=$(cat ~/dev/docker-secrets/npm-token)
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
