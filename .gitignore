@@ -1,2 +1,3 @@
 .netrwhist
 dots/vim/*
+dots/nvim/plugin/packer_compiled.lua

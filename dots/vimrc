@@ -37,6 +37,8 @@ call dein#add('vim-scripts/tComment')
 call dein#add('neoclide/coc.nvim', {'merged':0, 'rev': 'release'})
 call dein#add('editorconfig/editorconfig-vim')
 
+call dein#add('ruanyl/vim-gh-line')
+
 " TODO install typescript syntax support (see https://github.com/leafgarland/typescript-vim)
 
 " You can specify revision/branch/tag.
@@ -83,7 +85,7 @@ set colorcolumn=120                      " Mark column at 120 chars
 set expandtab                            " Expand tabs to spaces
 set wildignore+=*/tmp/*,*.so,*.swp " ignored by vim fs access
 set wildignore+=*/templates_c/*
-set wildignore+=*/node_modules/*
+set wildignore+=*/node_modules/*,*/dist/*
 set wildignore+=*/QueryBuilder.deploy*/*
 set t_Co=256
 set wildmenu
@@ -221,7 +223,7 @@ cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
 
 "map <leader><Tab> <C-w><C-w>
-map <leader>a :Chanstat<CR>
+map <leader>a :sav %:h/
 
 " 's'ql 'r'esults 'c'lose. Close results from dbext
 map <leader>src :DBResultsClose<CR>
@@ -232,6 +234,7 @@ nmap <leader>c ::bp\|bd #<CR>
 " 'd'iff. Show currently staged changes.
 map <leader>d :Staged<CR>
 
+vnoremap <leader>y "+y<CR>
 map <leader>f <ESC>:NERDTreeFind<CR>
 map <leader>g :GitGutterNextHunk<CR>
 map <leader>h :Hangup<CR>
@@ -268,9 +271,12 @@ command! Cupdate !composer update
 command! Cautoload !composer dumpautoload
 "command! -nargs=* Test !phpunit <f-args>
 command! -nargs=1 Unittest !vendor/bin/phpunit --debug --filter=<f-args> %
+" command! -nargs=1 Unittest !node_modules/.bin/jest --config ./src/test/jest.config.ts %
 command! ViewTests !gnome-open ./bin/report/index.html
 
 command! Curl !curl --data '{"file": "media.gsm"}' localhost:3000/media --header "Content-Type:application/json"
+
+command! Uuid !curl https://www.uuidgenerator.net/api/version4
 
 "asterisk
 command! Hangup !asterisk -x 'channel request hangup all'

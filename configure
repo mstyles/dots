@@ -42,6 +42,11 @@ do
             link ~/.bashrc "$dots/bashrc"
             ;;
 
+        zsh)
+            link ~/.zshrc "$dots/zshrc"
+            link ~/.p10k.zsh "$dots/p10k.zsh"
+            ;;
+
         composer)
             link ~/.composer/composer.json "$dots/composer.json"
             ;;
@@ -64,6 +69,14 @@ do
             link ~/.vimrc "$dots/vimrc"
             link ~/.vim "$dots/vim"
             vim +InstallPlugins +qall
+            ;;
+
+        nvim)
+            # TODO: flesh this out
+            # npm install -g typescript-language-server typescript
+            # brew install ripgrep
+            # sudo apt install fd-find
+            # sudo apt install xclip
             ;;
 
         all)

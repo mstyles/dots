@@ -131,6 +131,8 @@ export CIRCLE_API_USER_TOKEN=$(cat ~/dev/docker-secrets/circle-api-user-token)
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias vim="nvim"
+
 alias ll="ls -hal"
 alias fagent='eval $(ssh-agent -s) && ssh-add ~/.ssh/id_rsa'
 
@@ -142,11 +144,13 @@ alias bpapi="cd $WORKSPACE/bp-api"
 alias hp="cd $WORKSPACE/home-portal"
 alias fin="cd $WORKSPACE/financial-integration-service"
 alias biz="cd $WORKSPACE/business-service"
+alias bnk="cd $WORKSPACE/bank-service"
 alias infra="cd $HOME/dev/lendio-infra"
 alias binfra="cd $HOME/dev/billy-infra"
-alias bnksrv="cd $HOME/dev/billy-infra/repositories/bank-service"
+alias bnkb="cd $HOME/dev/billy-infra/repositories/bank-service"
 alias bapi="cd $HOME/dev/billy-infra/repositories/billy-api"
 
+alias dc="docker compose"
 alias docker-api="docker exec -it lendio-infra-api-1 sh"
 alias docker-worker="docker exec -it lendio-infra-api-worker_1 /bin/bash"
 alias docker-pp="docker exec -it lendio-infra-partner-portal_1 /bin/bash"
@@ -169,6 +173,21 @@ function showall {
 # Decodes the given JWT
 function jwt-decode(){
     jq -R 'split(".") | .[1] | @base64d | fromjson' <<< "$1"
+}
+
+# Docker PS Prettify Function
+function dock() {
+  if [[ "$@" == "ps" ]]; then
+    command docker ps --format 'table {{.Names}}\t{{.Status}} : {{.RunningFor}}\t{{.Ports}}'
+  elif [[ "$@" == "psa" ]]; then
+    # docker ps -a includes all containers
+    command docker ps -a --format 'table {{.Names}}\t{{.Status}}\t{{.Size}}\n{{.ID}}\t{{.Image}}{{if .Ports}}{{with $p := split .Ports ", "}}\t{{len $p}} port(s) on {{end}}{{- .Networks}}{{else}}\tNo Ports on {{ .Networks }}{{end}}\n'
+  elif [[ "$@" == "psnet" ]]; then
+    # docker ps with network information
+    command docker ps -a --format 'table {{.Names}}\t{{.Status}}\t{{.Networks}}\n{{.ID}}{{if .Ports}}{{with $p := split .Ports ", "}}{{range $p}}\t\t{{println .}}{{end}}{{end}}{{else}}\t\t{{println "No Ports"}}{{end}}'
+  else
+    command docker "$@"
+  fi
 }
 
 ##### Kubernetes stuffs ####
