@@ -6,7 +6,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -87,7 +87,7 @@ source $ZSH/oh-my-zsh.sh
 # User configuration
 
 export WORKSPACE="$HOME/dev/lendio-infra/repositories"
-export EDITOR=vim
+export EDITOR=nvim
 export COMPOSER_MEMORY_LIMIT=5G
 export PATH="/usr/local/opt/mysql-client@5.7/bin:$PATH"
 
@@ -132,9 +132,18 @@ export CIRCLE_API_USER_TOKEN=$(cat ~/dev/docker-secrets/circle-api-user-token)
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias vim="nvim"
+alias dots="cd ~/.dots"
 
 alias ll="ls -hal"
 alias fagent='eval $(ssh-agent -s) && ssh-add ~/.ssh/id_rsa'
+
+# sort in ASCII order (upper-case before lower-case)
+alias asciisort='LC_COLLATE=C sort'
+
+# print out $PATH line by line
+alias print_path="echo $PATH | tr : '\n'"
+
+alias uuid="curl https://www.uuidgenerator.net/api/version4; echo"
 
 alias api="cd $WORKSPACE/api"
 alias pp="cd $WORKSPACE/partner-portal"
@@ -145,6 +154,7 @@ alias hp="cd $WORKSPACE/home-portal"
 alias fin="cd $WORKSPACE/financial-integration-service"
 alias biz="cd $WORKSPACE/business-service"
 alias bnk="cd $WORKSPACE/bank-service"
+alias karen="cd $WORKSPACE/karen"
 alias infra="cd $HOME/dev/lendio-infra"
 alias binfra="cd $HOME/dev/billy-infra"
 alias bnkb="cd $HOME/dev/billy-infra/repositories/bank-service"
@@ -175,6 +185,12 @@ function jwt-decode(){
     jq -R 'split(".") | .[1] | @base64d | fromjson' <<< "$1"
 }
 
+function checkin(){
+  curl --location '{webhook-url}' \
+    --header 'Content-Type: application/json' \
+    --data-raw "{ \"what\": \"$1\", \"who\": \"matt.styles@lendio.com\" }"
+}
+
 # Docker PS Prettify Function
 function dock() {
   if [[ "$@" == "ps" ]]; then
@@ -201,6 +217,9 @@ function dock() {
 #
 # Tinker on Prod
 # kubectl exec -it deploy/api-rabbit-jobs -- php artisan tinker
+#
+# Pipe a script to Prod Tinker
+# more matt_test_matches.php | kubectl exec -it deploy/api-web -- php artisan tinker
 
 function sencrypt () {
     echo "Let's encrypt..."
@@ -219,6 +238,10 @@ function sdecrypt () {
         exit
     fi
     ssh salt-master-1.$1.corp.lendio.net "sudo salt-call datakey.decrypt s=\"$2\""
+}
+
+function ksecret () { # Return list of base64 decrypted secrets for the given pod/service
+  kubectl get secrets/$1 -o json | jq '.data | map_values(@base64d)'
 }
 
 function start-wireguard {
@@ -246,6 +269,9 @@ export GITHUB_TOKEN=$(cat ~/dev/docker-secrets/docker-git-token)
 
 export OAUTH_PRIVATE=$(cat ~/dev/docker-secrets/api-oauth-private.key)
 export OAUTH_PUBLIC=$(cat ~/dev/docker-secrets/api-oauth-public.key)
+
+# Weird env var throwing error in unit tests when run from host unless defined
+export LENDIO_TENANT_ID=1
 
 export NPM_TOKEN=$(cat ~/dev/docker-secrets/npm-token)
 export NVM_DIR="$HOME/.nvm"

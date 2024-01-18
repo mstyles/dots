@@ -17,16 +17,6 @@ function ColorMyPencils()
         vim.api.nvim_set_hl(0, name, new_def)
     end
 
-    extend_hl("GitGutterAdd", {
-        ctermfg = "Green",
-    })
-    extend_hl("GitGutterChange", {
-        ctermfg = "Yellow",
-    })
-    extend_hl("GitGutterDelete", {
-        ctermfg = "Red",
-    })
-
     hl("SignColumn", {
         bg = "none",
     })

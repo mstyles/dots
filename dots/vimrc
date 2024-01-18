@@ -188,7 +188,7 @@ hi link javaError None
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " $MAPPINGS
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let mapleader = ","
+let mapleader = " "
 map <leader>o <ESC>:CtrlPTag<CR>
 map <C-c> <ESC>:TComment<CR>
 xmap <C-c> <ESC>:'<,'>TComment<CR>

@@ -16,6 +16,7 @@
 [merge]
     tool = vimdiff
 [alias]
+    flog = !git log --first-parent
     lint = !git diff --cached --name-only --diff-filter=AM | grep 'php' | xargs -P 10 -n1 php -l
     recent = "!git reflog | egrep -io \"moving from ([^[:space:]]+)\" | awk '{ print $3 }' | awk ' !x[$0]++' | head -n 20"
     find-merge = "!sh -c 'commit=$0 && branch=${1:-HEAD} && (git rev-list $commit..$branch --ancestry-path | cat -n; git rev-list $commit..$branch --first-parent | cat -n) | sort -k2 -s | uniq -f1 -d | sort -n | tail -1 | cut -f2'"

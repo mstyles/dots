@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO replace with YADM? https://yadm.io/
+
 dots=$(dirname "$0")/dots
 
 #=== FUNCTION =================================================================
@@ -74,6 +76,7 @@ do
         nvim)
             # TODO: flesh this out
             # npm install -g typescript-language-server typescript
+            # npm install -g intelephense
             # brew install ripgrep
             # sudo apt install fd-find
             # sudo apt install xclip
