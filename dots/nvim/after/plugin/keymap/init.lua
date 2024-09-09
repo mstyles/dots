@@ -24,6 +24,7 @@ nnoremap('<leader>p', ':set paste!<CR>')
 nnoremap('<leader>u', ':!node_modules/.bin/jest --config ./src/test/jest.config.ts %<CR>')
 
 
+nnoremap('<leader>in', ':! docker compose exec api php artisan inspire<CR>')
 nnoremap('<leader>ru', ':! php %<CR>')
 -- nnoremap('<leader>ru', ':! node_modules/.bin/ts-node %<CR>')
 

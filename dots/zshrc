@@ -173,6 +173,11 @@ alias docker-start-full="cd $WORKSPACE && docker compose up -d && cd -"
 
 alias wrestart="docker exec lendio-infra-api-worker-1 pkill -9 -f artisan"
 
+alias redis-cli='docker run -it --rm --network=host redis:alpine redis-cli'
+
+# just a temporary bookmark of this command for later
+alias check-network='sudo journalctl -b 0 -u NetworkManager'
+
 # Bring all windows of the given proc to the front (e.g. "showall xterm")
 function showall {
   pids=" $(pidof $1) "
@@ -220,6 +225,9 @@ function dock() {
 #
 # Pipe a script to Prod Tinker
 # more matt_test_matches.php | kubectl exec -it deploy/api-web -- php artisan tinker
+#
+# Follow logs of all api web pods
+# kubectl logs deploy/api-web --all-containers=true --follow
 
 function sencrypt () {
     echo "Let's encrypt..."

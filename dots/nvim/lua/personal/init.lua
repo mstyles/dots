@@ -35,7 +35,7 @@ require'lspconfig'.intelephense.setup{
     vim.keymap.set("n", "<leader>dl", "<cmd>Telescope diagnostics<cr>", {buffer=0})
 
     vim.keymap.set("n", "<leader>ru", ":! php %<CR>", {buffer=0})
-    vim.keymap.set("n", "<leader>u", ":!vendor/bin/phpunit --debug %<CR>", {buffer=0})
+    vim.keymap.set("n", "<leader>u", ":!docker compose exec api vendor/bin/phpunit %<CR>", {buffer=0})
   end,
 }
 -- todo: install javascript language server
