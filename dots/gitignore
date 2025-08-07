@@ -4,3 +4,5 @@ matt_test*
 
 # Used to customize PHP Intellisense behavior
 .phpstorm.meta.php
+
+.phpunit.cache
