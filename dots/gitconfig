@@ -12,7 +12,7 @@
     branch = true
 [core]
     excludesfile = ~/.gitignore
-    editor = vim
+    editor = nvim
 [merge]
     tool = vimdiff
 [alias]
@@ -25,3 +25,5 @@
     apply-stash = "!sh -c 'git stash apply stash@{$0}'"
 [pull]
     ff = only
+[url "git@github.com:"]
+	insteadOf = https://github.com/

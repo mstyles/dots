@@ -105,6 +105,8 @@ export ECS_CLI_AWS_REGION="us-east-1"
 export ECS_CLI_AWS_SECRET=$(cat ~/dev/docker-secrets/ecs-cli-aws-secret)
 export ECS_CLI_AWS_KEY=$(cat ~/dev/docker-secrets/ecs-cli-aws-key)
 export CIRCLE_API_USER_TOKEN=$(cat ~/dev/docker-secrets/circle-api-user-token)
+# used by borrower-portal
+export START_MODE="dev"
 
 # export MANPAGER='nvim +Man!'
 
@@ -135,7 +137,7 @@ alias vim="nvim"
 alias dots="cd ~/.dots"
 
 alias ll="ls -hal"
-alias fagent='eval $(ssh-agent -s) && ssh-add ~/.ssh/id_rsa'
+alias fagent='eval $(ssh-agent -s) && ssh-add ~/.ssh/id_ed25519'
 
 # sort in ASCII order (upper-case before lower-case)
 alias asciisort='LC_COLLATE=C sort'
@@ -285,3 +287,10 @@ export NPM_TOKEN=$(cat ~/dev/docker-secrets/npm-token)
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+source ~/powerlevel10k/powerlevel10k.zsh-theme
+
+. "$HOME/.atuin/bin/env"
+
+eval "$(atuin init zsh)"
+
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
