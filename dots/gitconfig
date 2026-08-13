@@ -2,7 +2,7 @@
     name = Matt Styles
     email = matt.styles@lendio.com
 [push]
-    default = upstream
+	default = simple
 [log]
     decorate = auto
 [color]

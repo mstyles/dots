@@ -6,3 +6,7 @@ matt_test*
 .phpstorm.meta.php
 
 .phpunit.cache
+
+.claude/
+
+**/.claude/settings.local.json
